@@ -369,19 +369,22 @@ actions:
 	if gotOpts.Viewport == nil || gotOpts.Viewport.Width != 800 || gotOpts.Viewport.Height != 600 {
 		t.Fatalf("unexpected viewport: %+v", gotOpts.Viewport)
 	}
-	if gotOpts.ValidationProfile != browseractions.ValidationProfileLenient {
-		t.Fatalf("unexpected profile: %q", gotOpts.ValidationProfile)
+	if gotOpts.ExecuteOptions == nil {
+		t.Fatalf("expected ExecuteOptions to be set")
 	}
-	if !gotOpts.IncludeScreenshotData {
+	if gotOpts.ExecuteOptions.ValidationProfile != browseractions.ValidationProfileLenient {
+		t.Fatalf("unexpected profile: %q", gotOpts.ExecuteOptions.ValidationProfile)
+	}
+	if !gotOpts.ExecuteOptions.IncludeScreenshotData {
 		t.Fatalf("expected inline screenshot mode")
 	}
-	if !gotOpts.WriteFiles {
+	if !gotOpts.ExecuteOptions.WriteFiles {
 		t.Fatalf("expected WriteFiles=true in CLI run options")
 	}
-	if gotOpts.OutputDir != "artifacts" {
-		t.Fatalf("unexpected output dir: %q", gotOpts.OutputDir)
+	if gotOpts.ExecuteOptions.OutputDir != "artifacts" {
+		t.Fatalf("unexpected output dir: %q", gotOpts.ExecuteOptions.OutputDir)
 	}
-	if !gotOpts.Validate {
+	if !gotOpts.ExecuteOptions.Validate {
 		t.Fatalf("expected CLI to request validation")
 	}
 }

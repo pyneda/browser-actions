@@ -30,8 +30,10 @@ func Run(ctx context.Context, script browseractions.BrowserActions, opts *RunOpt
 		defer cancel()
 	}
 
-	if o.Validate {
-		if err := browseractions.ValidateScript(script, o.ValidationProfile); err != nil {
+	execOpts := o.ExecuteOptions.withDefaults()
+
+	if execOpts.Validate {
+		if err := browseractions.ValidateScript(script, execOpts.ValidationProfile); err != nil {
 			return result, err
 		}
 	}
@@ -42,15 +44,10 @@ func Run(ctx context.Context, script browseractions.BrowserActions, opts *RunOpt
 	}
 	defer cleanup()
 
-	execOpts := &ExecuteOptions{
-		Validate:              false, // already validated above when enabled
-		ValidationProfile:     o.ValidationProfile,
-		IncludeScreenshotData: o.IncludeScreenshotData,
-		WriteFiles:            o.WriteFiles,
-		OutputDir:             o.OutputDir,
-	}
+	// Disable re-validation in Execute since we already validated above.
+	execOpts.Validate = false
 
-	return runExecute(ctx, page, script.Actions, execOpts)
+	return runExecute(ctx, page, script.Actions, &execOpts)
 }
 
 func defaultRunOpenPage(opts RunOptions) (*rod.Page, func(), error) {

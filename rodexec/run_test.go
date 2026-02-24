@@ -38,8 +38,10 @@ func TestRunValidationFailureReturnsActionCountWithoutLaunching(t *testing.T) {
 	}
 
 	result, err := Run(context.Background(), script, &RunOptions{
-		Validate:          true,
-		ValidationProfile: browseractions.ValidationProfileStrict,
+		ExecuteOptions: &ExecuteOptions{
+			Validate:          true,
+			ValidationProfile: browseractions.ValidationProfileStrict,
+		},
 		// Intentionally invalid script should fail before browser launch.
 	})
 	if err == nil {
@@ -97,12 +99,14 @@ func TestRunPropagatesTimeoutAndExecuteOptions(t *testing.T) {
 		},
 	}
 	result, err := Run(context.Background(), script, &RunOptions{
-		Timeout:               200 * time.Millisecond,
-		Validate:              true,
-		ValidationProfile:     browseractions.ValidationProfileLenient,
-		IncludeScreenshotData: true,
-		WriteFiles:            false,
-		OutputDir:             "artifacts",
+		Timeout: 200 * time.Millisecond,
+		ExecuteOptions: &ExecuteOptions{
+			Validate:              true,
+			ValidationProfile:     browseractions.ValidationProfileLenient,
+			IncludeScreenshotData: true,
+			WriteFiles:            false,
+			OutputDir:             "artifacts",
+		},
 	})
 	if err != nil {
 		t.Fatalf("Run returned error: %v", err)
@@ -162,7 +166,7 @@ func TestRunRecoversFromExecutePanic(t *testing.T) {
 		Actions: []browseractions.Action{
 			{Type: browseractions.ActionSleep, Duration: 1},
 		},
-	}, &RunOptions{Validate: true})
+	}, &RunOptions{ExecuteOptions: &ExecuteOptions{Validate: true}})
 	if err == nil {
 		t.Fatalf("expected panic recovery error")
 	}

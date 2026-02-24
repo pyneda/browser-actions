@@ -65,16 +65,12 @@ type Viewport struct {
 }
 
 type RunOptions struct {
-	Headless              bool
-	Timeout               time.Duration
-	Proxy                 string
-	BinaryPath            string
-	Viewport              *Viewport
-	Validate              bool
-	ValidationProfile     browseractions.ValidationProfile
-	IncludeScreenshotData bool
-	WriteFiles            bool
-	OutputDir             string
+	Headless       bool
+	Timeout        time.Duration
+	Proxy          string
+	BinaryPath     string
+	Viewport       *Viewport
+	ExecuteOptions *ExecuteOptions
 }
 
 func (o *ExecuteOptions) withDefaults() ExecuteOptions {
@@ -93,19 +89,13 @@ func (o *ExecuteOptions) withDefaults() ExecuteOptions {
 func (o *RunOptions) withDefaults() RunOptions {
 	if o == nil {
 		return RunOptions{
-			Headless:          true,
-			Timeout:           30 * time.Second,
-			Validate:          true,
-			ValidationProfile: browseractions.ValidationProfileStrict,
-			WriteFiles:        true,
+			Headless: true,
+			Timeout:  30 * time.Second,
 		}
 	}
 	out := *o
 	if out.Timeout <= 0 {
 		out.Timeout = 30 * time.Second
-	}
-	if out.ValidationProfile == "" {
-		out.ValidationProfile = browseractions.ValidationProfileStrict
 	}
 	return out
 }

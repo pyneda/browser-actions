@@ -76,16 +76,18 @@ func runCmd(ctx context.Context, args []string) int {
 	}
 
 	runOpts := &rodexec.RunOptions{
-		Headless:              !*headed,
-		Timeout:               *timeout,
-		Proxy:                 *proxy,
-		BinaryPath:            *binary,
-		Viewport:              vp,
-		Validate:              true,
-		ValidationProfile:     parseValidationProfile(*profile),
-		IncludeScreenshotData: includeScreenshotData,
-		WriteFiles:            true,
-		OutputDir:             *outputDir,
+		Headless:   !*headed,
+		Timeout:    *timeout,
+		Proxy:      *proxy,
+		BinaryPath: *binary,
+		Viewport:   vp,
+		ExecuteOptions: &rodexec.ExecuteOptions{
+			Validate:              true,
+			ValidationProfile:     parseValidationProfile(*profile),
+			IncludeScreenshotData: includeScreenshotData,
+			WriteFiles:            true,
+			OutputDir:             *outputDir,
+		},
 	}
 
 	result, err := runScript(ctx, script, runOpts)

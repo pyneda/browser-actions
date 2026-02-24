@@ -184,8 +184,8 @@ func printRunHuman(
 		timeout = runOpts.Timeout.String()
 	}
 	profile := "-"
-	if runOpts != nil && runOpts.ValidationProfile != "" {
-		profile = string(runOpts.ValidationProfile)
+	if runOpts != nil && runOpts.ExecuteOptions != nil && runOpts.ExecuteOptions.ValidationProfile != "" {
+		profile = string(runOpts.ExecuteOptions.ValidationProfile)
 	}
 
 	printSection(os.Stdout, "Script")

@@ -36,21 +36,21 @@ const (
 )
 
 type Action struct {
-	Type       ActionType      `yaml:"type" json:"type" validate:"required,oneof=navigate click fill wait assert scroll screenshot sleep evaluate"`
-	Selector   string          `yaml:"selector,omitempty" json:"selector,omitempty" validate:"required_if=Type click,required_if=Type fill"`
-	Value      string          `yaml:"value,omitempty" json:"value,omitempty" validate:"required_if=Type fill"`
-	URL        string          `yaml:"url,omitempty" json:"url,omitempty" validate:"required_if=Type navigate,omitempty,url"`
-	For        WaitCondition   `yaml:"for,omitempty" json:"for,omitempty" validate:"omitempty,oneof=visible hidden enabled load"`
-	Condition  AssertCondition `yaml:"condition,omitempty" json:"condition,omitempty" validate:"required_if=Type assert,omitempty,oneof=contains equals visible hidden"`
-	Position   ScrollPosition  `yaml:"position,omitempty" json:"position,omitempty" validate:"required_if=Type scroll,omitempty,oneof=top bottom"`
-	File       string          `yaml:"file,omitempty" json:"file,omitempty" validate:"required_if=Type screenshot,omitempty"`
-	Duration   int             `yaml:"duration,omitempty" json:"duration,omitempty" validate:"required_if=Type sleep,omitempty,gt=0"`
-	Expression string          `yaml:"expression,omitempty" json:"expression,omitempty" validate:"required_if=Type evaluate,omitempty"`
+	Type       ActionType      `yaml:"type" json:"type"`
+	Selector   string          `yaml:"selector,omitempty" json:"selector,omitempty"`
+	Value      string          `yaml:"value,omitempty" json:"value,omitempty"`
+	URL        string          `yaml:"url,omitempty" json:"url,omitempty"`
+	For        WaitCondition   `yaml:"for,omitempty" json:"for,omitempty"`
+	Condition  AssertCondition `yaml:"condition,omitempty" json:"condition,omitempty"`
+	Position   ScrollPosition  `yaml:"position,omitempty" json:"position,omitempty"`
+	File       string          `yaml:"file,omitempty" json:"file,omitempty"`
+	Duration   int             `yaml:"duration,omitempty" json:"duration,omitempty"`
+	Expression string          `yaml:"expression,omitempty" json:"expression,omitempty"`
 }
 
 type BrowserActions struct {
-	Title   string   `yaml:"title" json:"title" validate:"required,min=1"`
-	Actions []Action `yaml:"actions" json:"actions" validate:"required,min=1,dive"`
+	Title   string   `yaml:"title" json:"title"`
+	Actions []Action `yaml:"actions" json:"actions"`
 }
 
 type ParseOptions struct {

@@ -9,14 +9,6 @@ go run ./cmd/browser-actions validate examples/basic-navigation.yaml
 go run ./cmd/browser-actions run examples/basic-navigation.yaml
 ```
 
-## Taskfile quick start
-
-```bash
-task examples:validate
-task examples:offline:serve   # terminal 1
-task examples:offline:run     # terminal 2
-```
-
 ## Example files
 
 - `basic-navigation.yaml`
@@ -43,7 +35,7 @@ task examples:offline:run     # terminal 2
 # Human-readable output
 go run ./cmd/browser-actions run examples/dom-playground.yaml
 
-# JSON output (LLM/tooling friendly)
+# JSON output
 go run ./cmd/browser-actions run --json examples/dom-playground.yaml
 
 # Validate using the compatibility profile
@@ -60,13 +52,6 @@ go run ./examples/fixture-server
 
 # Terminal 2
 go run ./cmd/browser-actions run examples/offline-local.yaml
-```
-
-Or with Taskfile:
-
-```bash
-task examples:offline:serve
-task examples:offline:run
 ```
 
 ## Notes

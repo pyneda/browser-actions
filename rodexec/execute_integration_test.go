@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -333,10 +334,17 @@ func newRodTestEnv(t *testing.T, html string) *rodTestEnv {
 		t.Skip("skipping browser-backed rodexec test in short mode")
 	}
 
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		_, _ = w.Write([]byte(html))
 	}))
+	ln, err := net.Listen("tcp4", "127.0.0.1:0")
+	if err != nil {
+		srv.Close()
+		t.Skipf("cannot bind local test server for rodexec integration tests: %v", err)
+	}
+	srv.Listener = ln
+	srv.Start()
 
 	bin, ok := findBrowserBinary()
 	if !ok {
@@ -385,7 +393,7 @@ func (e *rodTestEnv) Close() {
 }
 
 func findBrowserBinary() (string, bool) {
-	candidates := []string{"google-chrome", "chromium", "chromium-browser"}
+	candidates := []string{"google-chrome", "chrome", "chromium", "chromium-browser"}
 	for _, name := range candidates {
 		if p, err := exec.LookPath(name); err == nil {
 			return p, true

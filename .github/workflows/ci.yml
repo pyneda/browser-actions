@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Setup Chrome (for rodexec offline integration tests)
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Verify browser binary is available
+        shell: bash
+        run: |
+          set -euo pipefail
+          which google-chrome || true
+          which chrome || true
+          which chromium || true
+          which chromium-browser || true
+          if ! command -v google-chrome >/dev/null 2>&1 \
+            && ! command -v chrome >/dev/null 2>&1 \
+            && ! command -v chromium >/dev/null 2>&1 \
+            && ! command -v chromium-browser >/dev/null 2>&1; then
+            echo "No Chrome/Chromium binary found in PATH"
+            exit 1
+          fi
+
+      - name: Go test
+        env:
+          GOCACHE: /tmp/go-build
+        run: go test ./...
+
+      - name: Go test with coverage
+        env:
+          GOCACHE: /tmp/go-build
+        run: go test -cover ./...

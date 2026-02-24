@@ -1,0 +1,93 @@
+title: DOM Playground Capability Demo
+actions:
+  - type: navigate
+    url: https://example.com
+
+  - type: wait
+    for: load
+
+  - type: evaluate
+    expression: |
+      () => {
+        let root = document.getElementById('ba-demo-root');
+        if (root) root.remove();
+
+        root = document.createElement('div');
+        root.id = 'ba-demo-root';
+        root.style.cssText = 'margin:24px;padding:16px;border:2px solid #222;background:#fff;font-family:monospace;position:relative;z-index:9999;';
+
+        root.innerHTML = `
+          <h2 id="demo-title">Browser Actions Demo Fixture</h2>
+          <button id="show-form">Show Form</button>
+          <div id="demo-form" style="display:none;margin-top:12px;">
+            <label>Name <input id="demo-name" type="text" /></label>
+            <button id="demo-submit" type="button">Submit</button>
+          </div>
+          <div id="demo-status" style="display:none;margin-top:8px;color:green;"></div>
+          <div style="height:1400px; border-top:1px dashed #999; margin-top:16px; padding-top:8px;">
+            Scroll zone
+          </div>
+          <div id="demo-bottom-target" style="padding:8px;background:#eef;border:1px solid #99f;">
+            Bottom target reached
+          </div>
+        `;
+
+        root.querySelector('#show-form').addEventListener('click', () => {
+          root.querySelector('#demo-form').style.display = 'block';
+        });
+
+        root.querySelector('#demo-submit').addEventListener('click', () => {
+          const name = root.querySelector('#demo-name').value || 'anonymous';
+          const status = root.querySelector('#demo-status');
+          status.textContent = 'Saved name: ' + name;
+          status.style.display = 'block';
+        });
+
+        document.body.prepend(root);
+        return 'fixture-ready';
+      }
+
+  - type: assert
+    selector: "#demo-form"
+    condition: hidden
+
+  - type: click
+    selector: "#show-form"
+
+  - type: wait
+    selector: "#demo-form"
+    for: visible
+
+  - type: fill
+    selector: "#demo-name"
+    value: Alice
+
+  - type: click
+    selector: "#demo-submit"
+
+  - type: assert
+    selector: "#demo-status"
+    condition: visible
+
+  - type: assert
+    selector: "#demo-status"
+    condition: contains
+    value: Alice
+
+  - type: scroll
+    selector: "#demo-bottom-target"
+    position: bottom
+
+  - type: screenshot
+    file: examples/output/dom-playground-page.png
+
+  - type: screenshot
+    selector: "#demo-status"
+    file: examples/output/dom-playground-status.png
+
+  - type: evaluate
+    expression: "() => document.querySelector('#demo-status')?.textContent || ''"
+
+  - type: sleep
+    duration: 400
+

@@ -1,0 +1,16 @@
+{
+  "title": "Page Scroll And Evaluate (JSON Object)",
+  "actions": [
+    { "type": "navigate", "url": "https://example.com" },
+    { "type": "wait", "for": "load" },
+    {
+      "type": "evaluate",
+      "expression": "() => { const filler = document.createElement('div'); filler.id = 'filler'; filler.style.height = '2000px'; filler.textContent = 'filler'; document.body.appendChild(filler); return 'filler-added'; }"
+    },
+    { "type": "scroll", "position": "bottom" },
+    { "type": "screenshot", "file": "examples/output/page-scroll-bottom.png" },
+    { "type": "scroll", "position": "top" },
+    { "type": "evaluate", "expression": "() => window.scrollY" }
+  ]
+}
+

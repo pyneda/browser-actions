@@ -1,0 +1,57 @@
+title: Offline Local Fixture Demo
+actions:
+  - type: navigate
+    url: http://127.0.0.1:8765/index.html
+
+  - type: wait
+    for: load
+
+  - type: assert
+    selector: "#fixture-title"
+    condition: contains
+    value: Offline Fixture
+
+  - type: assert
+    selector: "#demo-form"
+    condition: hidden
+
+  - type: click
+    selector: "#show-form"
+
+  - type: wait
+    selector: "#demo-form"
+    for: visible
+
+  - type: fill
+    selector: "#demo-name"
+    value: local-user
+
+  - type: click
+    selector: "#submit-form"
+
+  - type: assert
+    selector: "#status"
+    condition: visible
+
+  - type: assert
+    selector: "#status"
+    condition: contains
+    value: local-user
+
+  - type: scroll
+    selector: "#bottom-target"
+    position: bottom
+
+  - type: screenshot
+    file: examples/output/offline-page.png
+
+  - type: screenshot
+    selector: "#status"
+    file: examples/output/offline-status.png
+
+  - type: evaluate
+    expression: "() => ({ title: document.title, status: document.querySelector('#status')?.textContent || '' })"
+
+  - type: sleep
+    duration: 300
+

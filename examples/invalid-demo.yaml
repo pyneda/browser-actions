@@ -1,0 +1,12 @@
+title: Invalid Demo For Validate Command
+actions:
+  - type: wait
+    for: visible
+    # Missing selector on purpose (strict profile should reject this)
+
+  - type: screenshot
+    # Missing file is okay in strict mode but not in sukyan-legacy profile
+
+  - type: evaluate
+    # Missing expression on purpose
+

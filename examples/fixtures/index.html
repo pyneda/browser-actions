@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>browser-actions offline fixture</title>
+    <style>
+      body {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        margin: 24px;
+        line-height: 1.4;
+      }
+      .card {
+        border: 2px solid #222;
+        padding: 16px;
+        background: #fff;
+      }
+      .muted {
+        color: #666;
+      }
+      .hidden {
+        display: none;
+      }
+      #spacer {
+        height: 1200px;
+        border-top: 1px dashed #aaa;
+        margin-top: 16px;
+        padding-top: 8px;
+      }
+      #bottom-target {
+        margin-top: 12px;
+        border: 1px solid #3b82f6;
+        background: #eff6ff;
+        padding: 8px;
+      }
+      button {
+        margin-right: 8px;
+      }
+      input {
+        min-width: 220px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="fixture-root">
+      <h1 id="fixture-title">Browser Actions Offline Fixture</h1>
+      <p class="muted">This page is designed for local browser-actions examples.</p>
+
+      <button id="show-form" type="button">Show Form</button>
+      <button id="hide-form" type="button">Hide Form</button>
+
+      <div id="demo-form" class="hidden" style="margin-top: 12px;">
+        <label for="demo-name">Name</label>
+        <input id="demo-name" type="text" placeholder="enter name" />
+        <button id="submit-form" type="button">Submit</button>
+      </div>
+
+      <div id="status" class="hidden" style="margin-top: 10px; color: #166534;"></div>
+
+      <div id="spacer">Scroll zone for page/element scroll examples</div>
+      <div id="bottom-target">Bottom target reached</div>
+    </div>
+
+    <script>
+      const showBtn = document.getElementById("show-form");
+      const hideBtn = document.getElementById("hide-form");
+      const form = document.getElementById("demo-form");
+      const nameInput = document.getElementById("demo-name");
+      const submitBtn = document.getElementById("submit-form");
+      const status = document.getElementById("status");
+
+      showBtn.addEventListener("click", () => {
+        form.classList.remove("hidden");
+      });
+
+      hideBtn.addEventListener("click", () => {
+        form.classList.add("hidden");
+      });
+
+      submitBtn.addEventListener("click", () => {
+        const name = (nameInput.value || "").trim() || "anonymous";
+        status.textContent = "Saved locally for " + name;
+        status.classList.remove("hidden");
+      });
+    </script>
+  </body>
+</html>
+

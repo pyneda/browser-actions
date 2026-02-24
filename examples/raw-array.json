@@ -1,0 +1,7 @@
+[
+  { "type": "navigate", "url": "https://example.com" },
+  { "type": "wait", "for": "load" },
+  { "type": "assert", "selector": "p", "condition": "contains", "value": "illustrative examples" },
+  { "type": "screenshot", "file": "examples/output/raw-array.png" }
+]
+

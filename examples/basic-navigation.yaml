@@ -1,0 +1,16 @@
+title: Basic Navigation and Screenshot
+actions:
+  - type: navigate
+    url: https://example.com
+
+  - type: wait
+    for: load
+
+  - type: assert
+    selector: h1
+    condition: contains
+    value: Example Domain
+
+  - type: screenshot
+    file: examples/output/basic-navigation.png
+

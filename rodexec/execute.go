@@ -75,12 +75,12 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 	case browseractions.ActionNavigate:
 		if err := page.Navigate(action.URL); err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to navigate to %s: %s", action.URL, err)
-			return actionErr(idx, action.Type, "failed to navigate to %s: %w", action.URL, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to navigate to %s", action.URL), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "navigated to %s", action.URL)
 		if err := page.WaitLoad(); err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to wait for page load: %s", err)
-			return actionErr(idx, action.Type, "failed to wait for page load: %w", err)
+			return actionErr(idx, action.Type, "failed to wait for page load", err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "page loaded")
 		return nil
@@ -89,7 +89,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		if action.For == browseractions.WaitLoad {
 			if err := page.WaitLoad(); err != nil {
 				logf(result, opts.LoggerHook, LogLevelError, "failed to wait for page load: %s", err)
-				return actionErr(idx, action.Type, "failed to wait for page load: %w", err)
+				return actionErr(idx, action.Type, "failed to wait for page load", err)
 			}
 			logf(result, opts.LoggerHook, LogLevelInfo, "waited for page load")
 			return nil
@@ -98,7 +98,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		el, err := page.Element(action.Selector)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to find element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to find element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to find element %s", action.Selector), err)
 		}
 
 		switch action.For {
@@ -113,7 +113,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		}
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to wait for element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to wait for element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to wait for element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "waited for element %s", action.Selector)
 		return nil
@@ -122,12 +122,12 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		el, err := page.Element(action.Selector)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to find element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to find element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to find element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "clicking element %s", action.Selector)
 		if err := el.Click(proto.InputMouseButtonLeft, 1); err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to click element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to click element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to click element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "clicked element %s", action.Selector)
 		return nil
@@ -136,12 +136,12 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		el, err := page.Element(action.Selector)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to find element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to find element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to find element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "filling element %s", action.Selector)
 		if err := el.Input(action.Value); err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to fill element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to fill element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to fill element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "filled element %s", action.Selector)
 		return nil
@@ -150,7 +150,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		el, err := page.Element(action.Selector)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to find element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to find element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to find element %s", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "asserting element %s", action.Selector)
 
@@ -159,17 +159,17 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 			isVisible, err := el.Visible()
 			if err != nil {
 				logf(result, opts.LoggerHook, LogLevelError, "failed to check visibility of element %s: %s", action.Selector, err)
-				return actionErr(idx, action.Type, "failed to check visibility of element %s: %w", action.Selector, err)
+				return actionErr(idx, action.Type, fmt.Sprintf("failed to check visibility of element %s", action.Selector), err)
 			}
 			if action.Condition == browseractions.AssertVisible && !isVisible {
 				msg := fmt.Sprintf("assertion failed: element %s is not visible", action.Selector)
 				logf(result, opts.LoggerHook, LogLevelError, msg)
-				return actionErr(idx, action.Type, msg)
+				return actionErr(idx, action.Type, msg, nil)
 			}
 			if action.Condition == browseractions.AssertHidden && isVisible {
 				msg := fmt.Sprintf("assertion failed: element %s is visible, expected hidden", action.Selector)
 				logf(result, opts.LoggerHook, LogLevelError, msg)
-				return actionErr(idx, action.Type, msg)
+				return actionErr(idx, action.Type, msg, nil)
 			}
 			logf(result, opts.LoggerHook, LogLevelInfo, "assertion passed for visibility on %s", action.Selector)
 			return nil
@@ -178,20 +178,20 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		text, err := el.Text()
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to get text of element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to get text of element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to get text of element %s", action.Selector), err)
 		}
 		switch action.Condition {
 		case browseractions.AssertContains:
 			if !strings.Contains(text, action.Value) {
 				msg := fmt.Sprintf("assertion failed: element text does not contain '%s'", action.Value)
 				logf(result, opts.LoggerHook, LogLevelError, msg)
-				return actionErr(idx, action.Type, msg)
+				return actionErr(idx, action.Type, msg, nil)
 			}
 		case browseractions.AssertEquals:
 			if text != action.Value {
 				msg := fmt.Sprintf("assertion failed: element text is not equal to '%s'", action.Value)
 				logf(result, opts.LoggerHook, LogLevelError, msg)
-				return actionErr(idx, action.Type, msg)
+				return actionErr(idx, action.Type, msg, nil)
 			}
 		default:
 			// no-op for unknown condition when validation is disabled
@@ -204,7 +204,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 			logf(result, opts.LoggerHook, LogLevelInfo, "scrolling page to %s", defaultScrollPosition(action.Position))
 			if err := scrollPage(page, action.Position); err != nil {
 				logf(result, opts.LoggerHook, LogLevelError, "failed to scroll page: %s", err)
-				return actionErr(idx, action.Type, "failed to scroll page: %w", err)
+				return actionErr(idx, action.Type, "failed to scroll page", err)
 			}
 			logf(result, opts.LoggerHook, LogLevelInfo, "scrolled page to %s", defaultScrollPosition(action.Position))
 			return nil
@@ -214,11 +214,11 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		logf(result, opts.LoggerHook, LogLevelInfo, "scrolling element %s into view", action.Selector)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to find element %s: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to find element %s: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to find element %s", action.Selector), err)
 		}
 		if err := scrollElementIntoView(el, action.Position); err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to scroll element %s into view: %s", action.Selector, err)
-			return actionErr(idx, action.Type, "failed to scroll element %s into view: %w", action.Selector, err)
+			return actionErr(idx, action.Type, fmt.Sprintf("failed to scroll element %s into view", action.Selector), err)
 		}
 		logf(result, opts.LoggerHook, LogLevelInfo, "scrolled element %s into view", action.Selector)
 		return nil
@@ -227,7 +227,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		sr, err := takeScreenshot(page, action, opts)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to take screenshot: %s", err)
-			return actionErr(idx, action.Type, "failed to take screenshot: %w", err)
+			return actionErr(idx, action.Type, "failed to take screenshot", err)
 		}
 		result.Screenshots = append(result.Screenshots, sr)
 		if action.Selector != "" {
@@ -253,7 +253,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 		evalResult, err := page.Eval(action.Expression)
 		if err != nil {
 			logf(result, opts.LoggerHook, LogLevelError, "failed to evaluate JavaScript: %s", err)
-			return actionErr(idx, action.Type, "error evaluating JavaScript: %w", err)
+			return actionErr(idx, action.Type, "error evaluating JavaScript", err)
 		}
 		value := ""
 		if evalResult != nil {
@@ -269,7 +269,7 @@ func executeAction(ctx context.Context, page *rod.Page, action browseractions.Ac
 	default:
 		msg := fmt.Sprintf("unsupported action type %q", action.Type)
 		logf(result, opts.LoggerHook, LogLevelError, msg)
-		return actionErr(idx, action.Type, msg)
+		return actionErr(idx, action.Type, msg, nil)
 	}
 }
 
@@ -359,8 +359,10 @@ func defaultScrollPosition(position browseractions.ScrollPosition) browseraction
 	return browseractions.ScrollTop
 }
 
-func actionErr(index int, actionType browseractions.ActionType, format string, args ...any) error {
-	format = strings.ReplaceAll(format, "%w", "%v")
-	msg := fmt.Sprintf(format, args...)
-	return fmt.Errorf("action %d (%s): %s", index, actionType, msg)
+func actionErr(index int, actionType browseractions.ActionType, msg string, cause error) error {
+	prefix := fmt.Sprintf("action %d (%s): %s", index, actionType, msg)
+	if cause != nil {
+		return fmt.Errorf("%s: %w", prefix, cause)
+	}
+	return fmt.Errorf("%s", prefix)
 }

@@ -10,7 +10,7 @@ type ValidationProfile string
 
 const (
 	ValidationProfileStrict       ValidationProfile = "strict"
-	ValidationProfileLegacySukyan ValidationProfile = "sukyan-legacy"
+	ValidationProfileLenient ValidationProfile = "lenient"
 )
 
 func ValidateScript(script BrowserActions, profile ValidationProfile) error {
@@ -56,7 +56,7 @@ func ValidateActions(actions []Action, profile ValidationProfile) error {
 	for i, action := range actions {
 		basePath := fmt.Sprintf("actions.%d", i)
 		switch profile {
-		case ValidationProfileLegacySukyan:
+		case ValidationProfileLenient:
 			diagnostics = append(diagnostics, validateActionLegacy(basePath, action)...)
 		case ValidationProfileStrict:
 			diagnostics = append(diagnostics, validateActionStrict(basePath, action)...)

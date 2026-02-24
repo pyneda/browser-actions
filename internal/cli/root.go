@@ -86,8 +86,8 @@ func parseValidationProfile(s string) browseractions.ValidationProfile {
 	switch strings.TrimSpace(strings.ToLower(s)) {
 	case "", "strict":
 		return browseractions.ValidationProfileStrict
-	case "sukyan-legacy", "legacy":
-		return browseractions.ValidationProfileLegacySukyan
+	case "lenient", "legacy":
+		return browseractions.ValidationProfileLenient
 	default:
 		return browseractions.ValidationProfile(s)
 	}

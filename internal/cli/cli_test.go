@@ -339,7 +339,7 @@ actions:
 		"--viewport", "800x600",
 		"--proxy", "http://127.0.0.1:8080",
 		"--binary", "/tmp/fake-browser",
-		"--profile", "sukyan-legacy",
+		"--profile", "lenient",
 		"--screenshot-data", "inline",
 		"--output-dir", "artifacts",
 		"--format", "yaml",
@@ -369,7 +369,7 @@ actions:
 	if gotOpts.Viewport == nil || gotOpts.Viewport.Width != 800 || gotOpts.Viewport.Height != 600 {
 		t.Fatalf("unexpected viewport: %+v", gotOpts.Viewport)
 	}
-	if gotOpts.ValidationProfile != browseractions.ValidationProfileLegacySukyan {
+	if gotOpts.ValidationProfile != browseractions.ValidationProfileLenient {
 		t.Fatalf("unexpected profile: %q", gotOpts.ValidationProfile)
 	}
 	if !gotOpts.IncludeScreenshotData {

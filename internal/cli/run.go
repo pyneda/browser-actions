@@ -21,7 +21,7 @@ func runCmd(ctx context.Context, args []string) int {
 	viewport := fs.String("viewport", "", "Viewport in WIDTHxHEIGHT format")
 	proxy := fs.String("proxy", "", "HTTP proxy URL for browser")
 	binary := fs.String("binary", "", "Browser binary path")
-	profile := fs.String("profile", "strict", "Validation profile: strict|sukyan-legacy")
+	profile := fs.String("profile", "strict", "Validation profile: strict|lenient")
 	screenshotData := fs.String("screenshot-data", "none", "Screenshot data mode: none|inline")
 	outputDir := fs.String("output-dir", "", "Base directory for screenshot files")
 	format := fs.String("format", "auto", "Input format override: auto|json|yaml")

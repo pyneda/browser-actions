@@ -39,7 +39,7 @@ go run ./cmd/browser-actions run examples/dom-playground.yaml
 go run ./cmd/browser-actions run --json examples/dom-playground.yaml
 
 # Validate using the compatibility profile
-go run ./cmd/browser-actions validate --profile sukyan-legacy examples/raw-array.json
+go run ./cmd/browser-actions validate --profile lenient examples/raw-array.json
 ```
 
 ## Offline demo (no external network)

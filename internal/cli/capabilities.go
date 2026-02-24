@@ -40,7 +40,7 @@ func capabilitiesCmd(args []string) int {
 		},
 		"profiles": []string{
 			string(browseractions.ValidationProfileStrict),
-			string(browseractions.ValidationProfileLegacySukyan),
+			string(browseractions.ValidationProfileLenient),
 		},
 		"formats": []string{
 			string(browseractions.InputFormatAuto),

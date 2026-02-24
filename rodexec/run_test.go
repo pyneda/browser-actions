@@ -99,7 +99,7 @@ func TestRunPropagatesTimeoutAndExecuteOptions(t *testing.T) {
 	result, err := Run(context.Background(), script, &RunOptions{
 		Timeout:               200 * time.Millisecond,
 		Validate:              true,
-		ValidationProfile:     browseractions.ValidationProfileLegacySukyan,
+		ValidationProfile:     browseractions.ValidationProfileLenient,
 		IncludeScreenshotData: true,
 		WriteFiles:            false,
 		OutputDir:             "artifacts",
@@ -128,7 +128,7 @@ func TestRunPropagatesTimeoutAndExecuteOptions(t *testing.T) {
 	if gotOpts.Validate {
 		t.Fatalf("expected execute validation disabled because Run validates first")
 	}
-	if gotOpts.ValidationProfile != browseractions.ValidationProfileLegacySukyan {
+	if gotOpts.ValidationProfile != browseractions.ValidationProfileLenient {
 		t.Fatalf("unexpected validation profile: %q", gotOpts.ValidationProfile)
 	}
 	if !gotOpts.IncludeScreenshotData {

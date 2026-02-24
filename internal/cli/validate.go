@@ -10,7 +10,7 @@ import (
 func validateCmd(args []string) int {
 	fs := newFlagSet("validate")
 	jsonOut := fs.Bool("json", false, "Output machine-readable JSON")
-	profile := fs.String("profile", "strict", "Validation profile: strict|sukyan-legacy")
+	profile := fs.String("profile", "strict", "Validation profile: strict|lenient")
 	format := fs.String("format", "auto", "Input format override: auto|json|yaml")
 	if err := fs.Parse(args); err != nil {
 		return 2

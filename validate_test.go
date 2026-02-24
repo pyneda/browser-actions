@@ -29,7 +29,7 @@ func TestValidateStrictWaitVisibleRequiresSelector(t *testing.T) {
 }
 
 func TestValidateLegacyScreenshotRequiresFile(t *testing.T) {
-	err := ValidateActions([]Action{{Type: ActionScreenshot}}, ValidationProfileLegacySukyan)
+	err := ValidateActions([]Action{{Type: ActionScreenshot}}, ValidationProfileLenient)
 	if err == nil {
 		t.Fatalf("expected legacy validation to require screenshot file")
 	}
@@ -97,7 +97,7 @@ func TestValidateStrictAssertEqualsRequiresValueAndHiddenDoesNot(t *testing.T) {
 func TestValidateWaitRulesDifferBetweenStrictAndLegacy(t *testing.T) {
 	action := Action{Type: ActionWait, For: WaitVisible}
 
-	if err := ValidateActions([]Action{action}, ValidationProfileLegacySukyan); err != nil {
+	if err := ValidateActions([]Action{action}, ValidationProfileLenient); err != nil {
 		t.Fatalf("expected legacy profile to allow wait visible without selector, got %v", err)
 	}
 
